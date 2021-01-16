@@ -1,0 +1,8 @@
+cradle:
+  stack:
+  - path : "./app/devel.hs"
+    component: "Manifestation:lib"
+  - path : "./app/main.hs"
+    component: "Manifestation:lib"
+  - path : "./app/DevelMain.hs"
+    component: "Manifestation:lib"
