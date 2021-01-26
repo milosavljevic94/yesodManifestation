@@ -7,6 +7,9 @@
                 Fast, stable & spiced with great community
             <a href="http://www.yesodweb.com/book/" .btn.btn-info.btn-lg>
                 Read the Book
+            <br>
+            <a href=@{ManHomeR} .btn.btn-info.btn-lg>
+                Go To App
 
 <div .container>
     <!-- Starting
@@ -18,7 +21,11 @@
                     <h1 #start>Starting
 
                     $# <a href=/proba>Link proba // ovo ce raditi ali ako se promeni naziv rute problem.zato koristimo tip ProbaR
-                    <a href=@{ProbaR}>Link ka proba
+                    <a href=@{ProbaR "Nemanja"}>Link ka proba
+
+                    <a href=@{PrikazR}>Link ka prikazu
+
+                    $#<a href=@{Prikaz2R}>Link ka JSON prikazu
 
                     <p>
                         Now that you have a working project you should use the

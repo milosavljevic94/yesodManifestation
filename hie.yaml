@@ -1,8 +1,19 @@
 cradle:
   stack:
-  - path : "./app/devel.hs"
-    component: "Manifestation:lib"
-  - path : "./app/main.hs"
-    component: "Manifestation:lib"
-  - path : "./app/DevelMain.hs"
-    component: "Manifestation:lib"
+    - path: "./src"
+      component: "Manifestation:lib"
+
+    - path: "./app/devel.hs"
+      component: "Manifestation:exe:Manifestation"
+
+    - path: "./app/main.hs"
+      component: "Manifestation:exe:Manifestation"
+
+    - path: "./app/DevelMain.hs"
+      component: "Manifestation:exe:Manifestation"
+
+    - path: "./app/Paths_Manifestation.hs"
+      component: "Manifestation:exe:Manifestation"
+
+    - path: "./test"
+      component: "Manifestation:test:Manifestation-test"

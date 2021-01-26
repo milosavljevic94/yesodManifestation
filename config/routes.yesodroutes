@@ -8,9 +8,15 @@
 /robots.txt RobotsR GET
 
 / HomeR GET POST
-
 /comments CommentR POST
-
 /profile ProfileR GET
 
-/proba ProbaR GET 
+-- handlers for Manidestation
+/manHome ManHomeR GET   -- manifestacije home page, kada korisnik nije ulogovan.
+-- /manUser ManUserR GET POST -- man home kada je korisnik ulogovan.
+-- /manDetail ManR GET    -- stranica na kojoj su prikazane informacije o manifestaciji.
+
+
+-- Proba. Ne moraju viticaste zagrade, jedino kada je u pitanju {Maybe Text}.
+/proba/#Text ProbaR GET
+/prikaz PrikazR GET

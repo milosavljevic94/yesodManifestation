@@ -1,0 +1,27 @@
+<h2 class="ui center aligned header">
+    Popular manifestations in Serbia
+<p>Welcome and thank you for using our app! <br />
+   You must <a href=@{AuthR LoginR}>login</a> for some other features on the site.
+<hr />
+$if null ms
+  <h4>There is nor manifestations in database!
+$else
+  <ul id="horizontal-list">
+    $forall Entity id man <- ms
+      <li>
+        <div class="ui link cards">
+          <div class="card">
+            <div class="image">
+              <img src="static/imgs/stadium1.jpeg">
+            <div class="content">
+              <div class="meta">
+                <span>#{toPathPiece id}
+                <a>#{manifestationName man}</a>
+            <div class="extra content">
+              <span class="right floated">
+                Start time:
+                #{show $ manifestationStartDateTime man}
+              <br />
+              <span>
+                <i class="user icon">
+                75 Likes

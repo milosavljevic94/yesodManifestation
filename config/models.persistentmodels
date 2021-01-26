@@ -6,13 +6,36 @@ User
     password Text Maybe sqltype=varchar(255) default=NULL
     UniqueUser ident
     deriving Typeable
+
 Email
     email Text sqltype=varchar(255)
     userId UserId Maybe sqltype=varchar(255) default=NULL
     verkey Text Maybe sqltype=varchar(255) default=NULL
     UniqueEmail email
+
 Comment json -- Adding "json" causes ToJSON and FromJSON instances to be derived.
     message Text sqltype=varchar(255)
     userId UserId Maybe sqltype=varchar(255) default=NULL
     deriving Eq
     deriving Show
+
+Address json
+    state Text sqltype=varchar(255)
+    city Text sqltype=varchar(255)
+    street Text Maybe sqltype=varchar(255)
+    number Text sqltype=varchar(255)
+    deriving Show Typeable
+
+Location
+    name Text sqltype=varchar(255)
+    address AddressId Maybe sqltype=varchar(255)
+    UniqueLocationName name
+    deriving Show Typeable
+
+Manifestation
+    name Text sqltype=varchar(255)
+    description Text Maybe sqltype=varchar(255)
+    startDateTime UTCTime sqltype=DateTime
+    location LocationId Maybe sqltype=varchar(255)
+    UniqueManName name
+    deriving Show Typeable
