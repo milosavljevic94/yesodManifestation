@@ -1,8 +1,14 @@
 <h2 class="ui center aligned header">
     Popular manifestations in Serbia
-<p>Welcome and thank you for using our app! <br />
-   You must <a href=@{AuthR LoginR}>login</a> for some other features on the site.
+<p>Welcome #{userIdent user} and thank you for using our app! <br />
+   You now can easely find your manifestation.
 <hr />
+
+<select class="ui dropdown">
+  <option value="">Category
+  $forall cat <- cats
+    <option value="i"> #{show $ cat}
+
 $if null ms
   <h4>There is nor manifestations in database!
 $else
@@ -20,6 +26,7 @@ $else
                  <img id="pic" src="static/imgs/theater.jpeg">
               $else
                   <img id="pic" src="static/imgs/no-image-icon.jpeg">
+            <div class="content">
               <div class="meta">
                 <span>#{toPathPiece id}
                 <a>#{manifestationName man}</a>

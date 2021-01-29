@@ -13,7 +13,7 @@
 
 -- handlers for Manidestation
 /manHome ManHomeR GET   -- manifestacije home page, kada korisnik nije ulogovan.
--- /manUser ManUserR GET POST -- man home kada je korisnik ulogovan.
+/manUser ManUserR GET -- man home kada je korisnik ulogovan sa dodatnim opcijama(filteri, search..).
 -- /manDetail ManR GET    -- stranica na kojoj su prikazane informacije o manifestaciji.
 
 

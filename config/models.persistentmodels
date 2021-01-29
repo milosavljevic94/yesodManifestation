@@ -5,7 +5,7 @@ User
     ident Text sqltype=varchar(255)
     password Text Maybe sqltype=varchar(255) default=NULL
     UniqueUser ident
-    deriving Typeable
+    deriving Show Typeable
 
 Email
     email Text sqltype=varchar(255)
@@ -35,6 +35,7 @@ Location
 Manifestation
     name Text sqltype=varchar(255)
     description Text Maybe sqltype=varchar(255)
+    category Category Maybe
     startDateTime UTCTime sqltype=DateTime
     location LocationId Maybe sqltype=varchar(255)
     UniqueManName name

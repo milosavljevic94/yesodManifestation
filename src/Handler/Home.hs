@@ -24,6 +24,7 @@ data FileForm = FileForm
 -- inclined, or create a single monolithic file.
 getHomeR :: Handler Html
 getHomeR = do
+    
     (formWidget, formEnctype) <- generateFormPost sampleForm
     let submission = Nothing :: Maybe FileForm
         handlerName = "getHomeR" :: Text
@@ -31,6 +32,7 @@ getHomeR = do
 
     defaultLayout $ do
         let (commentFormId, commentTextareaId, commentListId) = commentIds
+        maid <- maybeAuth 
         aDomId <- newIdent
         setTitle "Welcome To Yesod!"
         $(widgetFile "homepage")
@@ -46,6 +48,7 @@ postHomeR = do
 
     defaultLayout $ do
         let (commentFormId, commentTextareaId, commentListId) = commentIds
+        maid <- maybeAuthId 
         aDomId <- newIdent
         setTitle "Welcome To Yesod!"
         $(widgetFile "homepage")

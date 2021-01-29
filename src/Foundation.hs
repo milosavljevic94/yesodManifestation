@@ -15,7 +15,6 @@ import Database.Persist.Sql (ConnectionPool, runSqlPool)
 import Text.Hamlet          (hamletFile)
 import Text.Jasmine         (minifym)
 import Control.Monad.Logger (LogSource)
-
 -- Used only when in "auth-dummy-login" setting is enabled.
 import Yesod.Auth.Dummy
 
@@ -169,10 +168,12 @@ instance Yesod App where
     isAuthorized (ProbaR _) _  = return Authorized
     isAuthorized PrikazR _ =  return Authorized
     isAuthorized ManHomeR _ =  return Authorized
-
     -- the profile route requires that the user is authenticated, so we
     -- delegate to that function
     isAuthorized ProfileR _ = isAuthenticated
+    isAuthorized ManUserR _ = isAuthenticated
+
+    
 
     -- This function creates static content files in the static folder
     -- and names them based on a hash of their content. This allows
@@ -221,6 +222,8 @@ instance YesodBreadcrumbs App where
     breadcrumb HomeR = return ("Home", Nothing)
     breadcrumb (AuthR _) = return ("Login", Just HomeR)
     breadcrumb ProfileR = return ("Profile", Just HomeR)
+    breadcrumb ManHomeR = return ("ManHome", Just HomeR)
+    breadcrumb ManUserR = return ("ManUser", Just HomeR)
     breadcrumb  _ = return ("home", Nothing)
 
 -- How to run database actions.
@@ -240,13 +243,13 @@ instance YesodAuth App where
 
     -- Where to send a user after successful login
     loginDest :: App -> Route App
-    loginDest _ = HomeR
+    loginDest _ = ManUserR
     -- Where to send a user after logout
     logoutDest :: App -> Route App
-    logoutDest _ = HomeR
+    logoutDest _ = ManHomeR
     -- Override the above two destinations when a Referer: header is present
     redirectToReferer :: App -> Bool
-    redirectToReferer _ = True
+    redirectToReferer _ = False   
 
     authenticate :: (MonadHandler m, HandlerSite m ~ App)
                  => Creds App -> m (AuthenticationResult App)

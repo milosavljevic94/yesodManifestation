@@ -8,8 +8,12 @@
             <a href="http://www.yesodweb.com/book/" .btn.btn-info.btn-lg>
                 Read the Book
             <br>
-            <a href=@{ManHomeR} .btn.btn-info.btn-lg>
-                Go To App
+            $maybe _ <- maid
+                <a href=@{ManUserR} .btn.btn-info.btn-lg>
+                    Go To App
+            $nothing
+                <a href=@{ManHomeR} .btn.btn-info.btn-lg>
+                    Go To App
 
 <div .container>
     <!-- Starting
