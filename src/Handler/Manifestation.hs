@@ -17,6 +17,7 @@ getManHomeR = do
         setTitle "Home manifestations"
         $(widgetFile "man-home")
 
+--Get all maifestation logged user
 getManUserR :: Handler Html
 getManUserR = do
     (_, user) <- requireAuthPair
@@ -26,6 +27,10 @@ getManUserR = do
     defaultLayout $ do
         setTitle "User manifestations"
         $(widgetFile "man-user")
+
+--Get manifestation details
+getManDetailsR :: Handler Html
+getManDetailsR = error "not yet implementet"
 
 -- Helper function
 getAllMan :: DB [Entity Manifestation]

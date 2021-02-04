@@ -8,7 +8,7 @@
       <tbody>
         <tr style="height: 108px;">
           <td style="width: 17%; height: 120px;">
-             <img src="static/imgs/profile.jpeg" alt="Avatar" class="avatar">
+             <img src="/static/imgs/profile.jpeg" alt="Avatar" class="avatar">
              <p class="nameP">#{userIdent user}
           <td style="width: 83%; height: 120px;">
             <p>

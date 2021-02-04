@@ -1,6 +1,6 @@
 <h2 class="ui center aligned header">
     Popular manifestations in Serbia
-<p>Welcome #{userIdent user} and thank you for using our app! <br />
+<p>Welcome <b>#{userIdent user}</b> and thank you for using our app! <br />
    You now can easely find your manifestation.
 <hr />
 
@@ -19,17 +19,17 @@ $else
           <div class="card">
             <div class="image">
               $if (Just Sport) == manifestationCategory man
-                 <img id="pic" src="static/imgs/stadium1.jpeg">
+                 <img id="pic" src="/static/imgs/stadium1.jpeg">
               $elseif (Just Concert) == manifestationCategory man
-                 <img id="pic" src="static/imgs/concert1.jpeg">
+                 <img id="pic" src="/static/imgs/concert1.jpeg">
               $elseif (Just Theater) == manifestationCategory man
-                 <img id="pic" src="static/imgs/theater.jpeg">
+                 <img id="pic" src="/static/imgs/theater.jpeg">
               $else
                   <img id="pic" src="static/imgs/no-image-icon.jpeg">
             <div class="content">
               <div class="meta">
                 <span>#{toPathPiece id}
-                <a>#{manifestationName man}</a>
+                <a href=@{ManDetailsR}>#{manifestationName man}</a>
             <div class="extra content">
               <span class="right floated">
                 Start time:

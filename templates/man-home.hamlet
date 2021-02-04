@@ -13,11 +13,11 @@ $else
           <div class="card">
             <div class="image">
               $if (Just Sport) == manifestationCategory man
-                 <img id="pic" src="static/imgs/stadium1.jpeg">
+                 <img id="pic" src="/static/imgs/stadium1.jpeg">
               $elseif (Just Concert) == manifestationCategory man
-                 <img id="pic" src="static/imgs/concert1.jpeg">
+                 <img id="pic" src="/static/imgs/concert1.jpeg">
               $elseif (Just Theater) == manifestationCategory man
-                 <img id="pic" src="static/imgs/theater.jpeg">
+                 <img id="pic" src="/static/imgs/theater.jpeg">
               $else
                   <img id="pic" src="static/imgs/no-image-icon.jpeg">
               <div class="meta">
