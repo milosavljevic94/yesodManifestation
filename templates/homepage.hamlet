@@ -15,7 +15,7 @@
                 <a href=@{ManHomeR} .btn.btn-info.btn-lg>
                     Go To App
 
-<div .container>
+<div .container .back>
     <!-- Starting
         ================================================== -->
     <div .bs-docs-section>

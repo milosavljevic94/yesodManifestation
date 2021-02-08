@@ -1,40 +1,43 @@
-<h2 class="ui center aligned header">
-    Popular manifestations in Serbia
-<p>Welcome <b>#{userIdent user}</b> and thank you for using our app! <br />
-   You now can easely find your manifestation.
-<hr />
+<!-- details card section starts from here -->
+<section class="details-card">
+  <div class="container">
+    <h1>Popular manifestations in Serbia
+    <p>Welcome <b>#{userIdent user}</b> and thank you for using our app!<br />You now can easely find your manifestation.
 
-<select class="ui dropdown">
-  <option value="">Category
-  $forall cat <- cats
-    <option value="i"> #{show $ cat}
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <select class="form-control" id="sel1">
+            <option>--Please choose an category--
+            $forall cat <- cats
+              <option>#{show $ cat}
+    
+      <div class="span4">
+        <form class="form-search">
+            <div class="input-append">
+                <input type="text" class="span2">
+                <button type="submit" class="btn">Search
 
-$if null ms
-  <h4>There is nor manifestations in database!
-$else
-  <ul id="horizontal-list">
-    $forall Entity id man <- ms
-      <li>
-        <div class="ui link cards">
-          <div class="card">
-            <div class="image">
-              $if (Just Sport) == manifestationCategory man
-                 <img id="pic" src="/static/imgs/stadium1.jpeg">
-              $elseif (Just Concert) == manifestationCategory man
-                 <img id="pic" src="/static/imgs/concert1.jpeg">
-              $elseif (Just Theater) == manifestationCategory man
-                 <img id="pic" src="/static/imgs/theater.jpeg">
-              $else
-                  <img id="pic" src="static/imgs/no-image-icon.jpeg">
-            <div class="content">
-              <div class="meta">
-                <span>#{toPathPiece id}
-                <a href=@{ManDetailsR}>#{manifestationName man}</a>
-            <div class="extra content">
-              <span class="right floated">
-                Start time:
-                #{show $ manifestationStartDateTime man}
-              <br />
-              <span>
-                <i class="user icon">
-                75 Likes
+    $if null ms
+      <h4>There is nor manifestations in database!
+    $else
+      $forall Entity id man <- ms
+        <div class="col-md-4">
+          <div class="card-content">
+            <a href=@{ManDetailsR}>
+              <div class="card-img">
+                $if (Just Sport) == manifestationCategory man
+                  <img id="pic" class="card-img-top" src="/static/imgs/stadium1.jpeg" alt="">
+                $elseif (Just Concert) == manifestationCategory man
+                  <img id="pic" class="card-img-top" src="/static/imgs/concert1.jpeg" alt="">
+                $elseif (Just Theater) == manifestationCategory man
+                  <img id="pic" class="card-img-top" src="/static/imgs/theater.jpeg" alt="">
+                $else
+                  <img id="pic" class="card-img-top" src="/static/imgs/no-image-icon.jpeg" alt="">
+            <div class="card-desc">
+                  <h3>#{manifestationName man}
+                  <p>This event has id : #{toPathPiece id}.<br/>
+                      Start time: #{show $ manifestationStartDateTime man} <br/>
+                      <a href=@{ManDetailsR} class="btn-card">Details
+                  <div class="card-footer">
+                    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;

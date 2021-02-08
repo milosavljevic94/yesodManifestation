@@ -11,3 +11,7 @@ li {
     width: 400px;
     height: 100px;
 }
+
+.back {
+    background-color: white;
+}

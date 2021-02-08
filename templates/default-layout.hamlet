@@ -22,7 +22,7 @@
 
 <!-- Page Contents -->
 
-<div .container>
+<div .container .bre>
     $if not $ Just HomeR == mcurrentRoute
         <ul .breadcrumb>
             $forall bc <- parents
@@ -38,7 +38,7 @@
 $if (Just HomeR == mcurrentRoute)
     ^{widget}
 $else
-    <div .container>
+    <div .container .bre>
         <div .row>
             <div .col-md-12>
                 ^{widget}

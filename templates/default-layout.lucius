@@ -71,3 +71,12 @@
 #message {
     margin-bottom: 40px;
 }
+
+.navbar {
+    margin-bottom: 0px;
+}
+
+.bre {
+  width: 1320px;
+  background-color: white;
+}
