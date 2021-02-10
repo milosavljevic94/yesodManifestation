@@ -1,5 +1,6 @@
 
 <!-- Static navbar -->
+
 <nav .navbar.navbar-default.navbar-static-top>
     <div .container>
         <div .navbar-header>
@@ -38,13 +39,51 @@
 $if (Just HomeR == mcurrentRoute)
     ^{widget}
 $else
-    <div .container .bre>
+    <div .container .bre1>
         <div .row>
             <div .col-md-12>
                 ^{widget}
 
 <!-- Footer -->
-<footer .footer>
+
+<footer .site-footer>
     <div .container>
-        <p .text-muted>
-            #{appCopyright $ appSettings master}
+        <div class="row">
+          <div class="col-sm-12 col-md-6">
+            <h6>About
+            <p class="text-justify">This is a site where you can find popular manifestations and events in Serbia.<br>
+                You can easily find the event you want, find out about everything you need<br> 
+                and post your comments.<br>
+                The website, web application was created in the Haskell/Yesod programming language.<br>
+                Developed by: Nemanja Milosavljevic
+
+          <div class="col-xs-6 col-md-3">
+            <h6>Pages</h6>
+            <ul class="footer-links">
+              <li><a href="#">Home</a>
+              <li><a href="#">Manifestation home</a>
+              <li><a href="#">Manifestation user</a>
+              <li><a href="#">Manifestation details</a>
+              <li><a href="#">Profile</a>
+              <li><a href="#">Login</a>
+
+          <div class="col-xs-6 col-md-3">
+            <h6>Quick Links
+            <ul class="footer-links">
+              <li><a href="#">About Us</a>
+              <li><a href="#">Contact Us</a>
+              <li><a href="#">Contribute</a>
+              <li><a href="#">Privacy Policy</a>
+              <li><a href="#">Sitemap</a>
+        <hr>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-sm-6 col-xs-12">
+            <p class="copyright-text">Copyright &copy; 2021 All Rights Reserved by #{appCopyright $ appSettings master}.
+
+          <div class="col-md-4 col-sm-6 col-xs-12">
+            <ul class="social-icons">
+              <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
+              <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
+              <li><a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a>
+              <li><a class="linkedin" href="#"><i class="fa fa-linkedin"></i></a>

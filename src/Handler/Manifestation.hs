@@ -30,7 +30,9 @@ getManUserR = do
 
 --Get manifestation details
 getManDetailsR :: Handler Html
-getManDetailsR = error "not yet implementet"
+getManDetailsR = defaultLayout $ do
+    setTitle "Manifestation details"
+    $(widgetFile "man-details")
 
 -- Helper function
 getAllMan :: DB [Entity Manifestation]
@@ -38,3 +40,6 @@ getAllMan = selectList [] [Desc ManifestationName]
 
 getAllCat :: [Category]
 getAllCat = [(minBound :: Category) ..]
+
+dateFormat :: UTCTime -> String
+dateFormat = formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S"

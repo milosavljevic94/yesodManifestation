@@ -19,7 +19,7 @@ INSERT INTO location (name, address) VALUES ('Stadion Karadjordje', 7);
 
 -- data for manifestation table
 INSERT INTO manifestation (name, description, category, start_date_time, location) 
-VALUES ('Utakmica Radicki-Sloboda', 'Fudbalska utakmica izmedju ekipe iz Kragujevca i ekipe iz Uzica.', 'Sport', '2021-02-25 15:00:00', 1);
+VALUES ('Utakmica Radnicki-Sloboda', 'Fudbalska utakmica izmedju ekipe iz Kragujevca i ekipe iz Uzica.', 'Sport', '2021-02-25 15:00:00', 1);
 INSERT INTO manifestation (name, description, category, start_date_time, location) 
 VALUES ('Koncert Smaka', 'Koncert grupe Smak.', 'Concert', '2021-03-05 18:00:00', 2);
 INSERT INTO manifestation (name, description, category, start_date_time, location) 

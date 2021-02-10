@@ -1,17 +1,14 @@
-<div .ui.container>
-
-    
-    <h1>
-      Access granted!
-
-    <table style="border-collapse: collapse; width: 100%; height: 180px;" border="2">
-      <tbody>
-        <tr style="height: 108px;">
-          <td style="width: 17%; height: 120px;">
-             <img src="/static/imgs/profile.jpeg" alt="Avatar" class="avatar">
-             <p class="nameP">#{userIdent user}
-          <td style="width: 83%; height: 120px;">
-            <p>
-              This page is protected and access is allowed only for authenticated users.
-            <p>
-              Your data is protected with us <strong><span class="username">#{userIdent user}</span></strong>!
+<div class="container">
+  <h1>Welcome to your profile!
+  
+  <div class="row">
+    <div class="col-md-6 img">
+      <img src="https://placeimg.com/280/183/people"  alt="" class="img-rounded">
+    <div class="col-md-6 details">
+      <blockquote>
+        <h4>#{userIdent user}
+        <small><cite title="Source Title">Faculty of Technical Sciences, Novi Sad<i class="icon-map-marker"></i></cite></small>
+      <p>
+        This page is protected and access is allowed only for authenticated users. <br>
+        Your data is protected with us <strong><span class="username">#{userIdent user}</span></strong>! <br>
+        #{now}

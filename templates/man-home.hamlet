@@ -2,6 +2,9 @@
 <section class="details-card">
     <div class="container">
         <h1 style="margin-top: -70px;">Popular manifestations in Serbia
+        <p>Welcome to the site, currently you can only have an overview of events, <br>
+          for more options you need to <a href="@{AuthR LoginR}">log in</a>, thank you!
+          
         <div class="row">
           $if null ms
             <h4>There is nor manifestations in database!
@@ -9,7 +12,6 @@
             $forall Entity id man <- ms
               <div class="col-md-4">
                 <div class="card-content">
-                  <a href="#">
                     <div class="card-img">
                       $if (Just Sport) == manifestationCategory man
                         <img id="pic" class="card-img-top" src="/static/imgs/stadium1.jpeg" alt="">
@@ -22,7 +24,6 @@
                   <div class="card-desc">
                         <h3>#{manifestationName man}
                         <p>This event has id : #{toPathPiece id}.<br/>
-                           Start time: #{show $ manifestationStartDateTime man} <br/>
-                            <a href="#" class="btn-card">Details
+                           Start time: #{dateFormat $ manifestationStartDateTime man} <br/>
                         <div class="card-footer">
                           <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;

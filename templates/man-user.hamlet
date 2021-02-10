@@ -37,7 +37,7 @@
             <div class="card-desc">
                   <h3>#{manifestationName man}
                   <p>This event has id : #{toPathPiece id}.<br/>
-                      Start time: #{show $ manifestationStartDateTime man} <br/>
+                      Start time: #{dateFormat $ manifestationStartDateTime man} <br/>
                       <a href=@{ManDetailsR} class="btn-card">Details
                   <div class="card-footer">
                     <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;
