@@ -172,7 +172,7 @@ instance Yesod App where
     -- delegate to that function
     isAuthorized ProfileR _ = isAuthenticated
     isAuthorized ManUserR _ = isAuthenticated
-    isAuthorized ManDetailsR _ = isAuthenticated
+    isAuthorized (ManDetailsR _) _ = isAuthenticated
 
     
 

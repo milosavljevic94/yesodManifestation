@@ -13,8 +13,8 @@
 
 -- routes for Manifestation
 /man/manHome ManHomeR GET       -- manifestacije home page, kada korisnik nije ulogovan.
-/man/manUser ManUserR GET       -- man home kada je korisnik ulogovan sa dodatnim opcijama(filteri, search..).
-/man/manDetail ManDetailsR GET      -- stranica na kojoj su prikazane informacije o manifestaciji.
+/man/manUser ManUserR GET POST     -- man home kada je korisnik ulogovan sa dodatnim opcijama(filteri, search..).
+/man/manDetail/#ManifestationId ManDetailsR GET      -- stranica na kojoj su prikazane informacije o manifestaciji.
 
 
 -- Proba. Ne moraju viticaste zagrade, jedino kada je u pitanju {Maybe Text}.

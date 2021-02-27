@@ -4,19 +4,50 @@
     <h1>Popular manifestations in Serbia
     <p>Welcome <b>#{userIdent user}</b> and thank you for using our app!<br />You now can easely find your manifestation.
 
+    <!-- Filter and search section -->
     <div class="row">
-      <div class="col-md-3">
-        <div class="form-group">
-          <select class="form-control" id="sel1">
-            <option>--Please choose an category--
-            $forall cat <- cats
-              <option>#{show $ cat}
-    
-      <div class="span4">
-        <form class="form-search">
-            <div class="input-append">
-                <input type="text" class="span2">
-                <button type="submit" class="btn">Search
+      <div class="col-md-12">
+        <div class="grid search">
+          <div class="grid-body">
+            <div class="row">
+
+              <!-- BEGIN FILTERS -->
+
+              <hr>
+              <!-- BEGIN FILTER BY CATEGORY -->
+              <form method="post" action="@{ManUserR}">
+                <div class="col-md-2 cbox1">
+                    <h4>By category:
+                    <table>
+                      $forall cat <- cats
+                        <tr>
+                          <td>
+                            <input id="cat-#{toPathPiece(show cat)}" type="checkbox" name="#{toPathPiece(show cat)}">
+                          <th>
+                            <label for="cat-#{toPathPiece(show cat)}">&nbsp#{show cat}
+                  
+                <!-- BEGIN FILTER BY CITY -->
+                <div class="col-md-3">
+                  <h4>By city:
+                  <div class="form-group">
+                    <select class="form-control" id="sel1" name="City">
+                      <option>--Please choose an city--
+                      $forall c <- cities
+                        <option>#{show c}
+                  
+                <div class="padding">
+
+                <!-- BEGIN SEARCH INPUT -->
+                <div class="col-md-4">
+                  <h4><i class="fa fa-file-o"></i> Search :
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="Search" value="web development">
+                  <p>Showing all results matching "web development"
+                
+                <!-- SUBMIT BUTTON-->
+                <div class="col-md-2 btnPadding">
+                  <button type="submit" class="btn btn-primary">Apply filters</button>
+    <hr>
 
     $if null ms
       <h4>There is nor manifestations in database!
@@ -24,7 +55,7 @@
       $forall Entity id man <- ms
         <div class="col-md-4">
           <div class="card-content">
-            <a href=@{ManDetailsR}>
+            <a href=@{ManDetailsR id}>
               <div class="card-img">
                 $if (Just Sport) == manifestationCategory man
                   <img id="pic" class="card-img-top" src="/static/imgs/stadium1.jpeg" alt="">
@@ -38,6 +69,6 @@
                   <h3>#{manifestationName man}
                   <p>This event has id : #{toPathPiece id}.<br/>
                       Start time: #{dateFormat $ manifestationStartDateTime man} <br/>
-                      <a href=@{ManDetailsR} class="btn-card">Details
+                      <a href=@{ManDetailsR id} class="btn-card">Details
                   <div class="card-footer">
                     <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;

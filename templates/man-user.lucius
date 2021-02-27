@@ -123,3 +123,16 @@ a.btn-card {
 }
 
 /* End card section */
+
+.btnPadding {
+    padding-top: 42px;
+}
+
+.btn-primary {
+    width: -moz-available;
+}
+
+.cbox1{
+    margin-left: 15px;
+    
+}

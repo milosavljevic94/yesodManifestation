@@ -22,9 +22,9 @@ Comment json -- Adding "json" causes ToJSON and FromJSON instances to be derived
 Address json
     state Text sqltype=varchar(255)
     city Text sqltype=varchar(255)
-    street Text Maybe sqltype=varchar(255)
+    street Text sqltype=varchar(255)
     number Text sqltype=varchar(255)
-    deriving Show Typeable
+    deriving Show Typeable Eq
 
 Location
     name Text sqltype=varchar(255)
