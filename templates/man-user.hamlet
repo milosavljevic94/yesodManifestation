@@ -33,7 +33,7 @@
                     <select class="form-control" id="sel1" name="City">
                       <option>--Please choose an city--
                       $forall c <- cities
-                        <option>#{show c}
+                        <option>#{c}
                   
                 <div class="padding">
 

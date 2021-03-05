@@ -5,7 +5,7 @@
                 <p class="mb-0">#{fromJust(manifestationDescription md)}
 
             <div class="project-info-box">
-                <p><b>Start :</b>&nbsp#{show $ manifestationStartDateTime md}
+                <p><b>Start :</b>&nbsp#{dateFormat $ manifestationStartDateTime md}
                 <p><b>Location :</b>&nbsp#{locationName loc}
                 <p><b>Address :</b>&nbsp#{addressCity ads}, #{addressStreet ads}, #{addressNumber ads}<br >#{addressState ads}
                 <p><b>Tools:</b> Illustrator

@@ -6,24 +6,29 @@
 {-# LANGUAGE QuasiQuotes#-}
 {-# OPTIONS_GHC -Wno-unused-matches #-}
 {-# OPTIONS_GHC -Wno-name-shadowing #-}
+
 module Handler.Manifestation where
 
 import Import
 import Model.Types
 import Data.Maybe (fromJust)
-import Data.List (nub)
 import qualified Data.Text as T
-import Database.Persist.Sql (rawSql)
+import Database.Persist.Sql ( rawSql, Single (unSingle) )
+import qualified Data.Char as C
+import Data.Text.ICU
 
 data ManFilter = ManFilter
-    {
-        filterCat       :: Maybe [Category],
+    {                                           -- filterCat :: [Category] -- getting categories out of this data
         filterCity      :: Maybe T.Text,
         filterSearch    :: Maybe T.Text
     }
     deriving Show
 
--- Get all manifestations
+-- Handlers
+
+{- 
+    Get just preview of all manifestations.
+-}
 getManHomeR :: Handler Html
 getManHomeR = do
     ms <- runDB getAllMan
@@ -31,93 +36,99 @@ getManHomeR = do
         setTitle "Home manifestations"
         $(widgetFile "man-home")
 
---Get all maifestation logged user and filters
+{- 
+    User is logged in.
+    Show all manifestations with filter options.
+-}
 getManUserR :: Handler Html
 getManUserR = do
     (_, user) <- requireAuthPair
     ms <- runDB getAllMan
     let cats = getAllCat
-    --cities <- runDB getUniqueCity
-    cities <- nub <$> runDB (selectList [] [Desc AddressCity])
-    liftIO $ print cities
+    cities <- getUniqueCity
+
     defaultLayout $ do
         setTitle "User manifestations"
         $(widgetFile "man-user")
 
-
-
-{- filterForm :: Form Filter
-filterForm = renderDivs Filter
-    <$> aopt (selectField optionsEnum) "Category" ()
-    <*> areq (jqueryDayField def
-        { jdsChangeYear = True -- give a year dropdown
-        , jdsYearRange = "1900:-5" -- 1900 till five years ago
-        }) "Birthday" Nothing
-    <*> aopt textField "Favorite color" Nothing
-    <*> areq emailField "Email address" Nothing
-    <*> aopt urlField "Website" Nothing -}
-
--- dugme submit dovodi do ove funkcije. U ovoj funkciji bi se onda izvrsilo filtriranje i prikazale
--- bi se manifestacije koje su filtrirane!
-
+{- 
+    Apply filters and get data from fields.
+    Show filtered manifestations in same template "man-user".
+-}
 postManUserR :: Handler Html
 postManUserR = do
     (_, user) <- requireAuthPair
-    --let toBool = maybe False (const True)
+    let toBool = isJust     
+    emans <- runDB getAllMan
+    let mans = toValues emans
+    categories <- flip filterM getAllCat $ \cid -> toBool <$> runInputPost (iopt textField $ toPathPiece $ show cid)
     filters <- runInputPost $ ManFilter
-        <$>iopt (checkboxesFieldList cats) "Cat"
-        <*>iopt (selectField cities) "City"
+        <$>iopt textField "City"
         <*>iopt textField "Search"
-    defaultLayout [whamlet|<h1>#{show $ filters}|]
- where
-  cats::[(Text, Category)]
-  cats = [("Sport", Sport), ("Concert", Concert ), ("Theater", Theater)]
-  cities = do
-        items <- runDB $ rawSql "SELECT DISTINC city from address" []
-        --items <- runDB $ rawSql "SELECT city FROM address GROUP BY city" []
-       --items <- runDB $ selectList [] [Desc AddressCity]
-        optionsPairs $ map (\c -> (addressCity $ entityVal c, addressCity $ entityVal c)) items
+    let filteredMan = filter (applyFilters filters) mans        --filterManifestations categories (filterSearch filters) (filterCity filters)
+    defaultLayout $ do
+         [whamlet|<h1>#{show $ filteredMan}|]
 
+{- 
+    Take manifestation id.
+    Show details about one manifestation.
+-}
 getManDetailsR :: ManifestationId -> Handler Html
 getManDetailsR mid = do
     (_, user) <- requireAuthPair
     md <- runDB $ get404 mid
-    loc <- runDB $ get404 $ fromJust(manifestationLocation md)
-    ads <- runDB $ get404 $ fromJust(locationAddress loc)
+    loc <- runDB $ get404 $ manifestationLocation md
+    ads <- runDB $ get404 $ locationAddress loc
+
     defaultLayout $ do
         setTitle "Manifestation details"
         $(widgetFile "man-details")
 
+
 -- Helper functions
+
+{- filterManifestations :: [Category] -> Maybe T.Text -> Maybe T.Text -> Handler [Entity Manifestation]
+filterManifestations cat city src = do
+    let city' = fromMaybe city
+        src' = fromMaybe src
+    runDB $ selectList [ManifestationName <-. cat] [] -}
+
+-- proba 
+applyFilters :: ManFilter -> Manifestation -> Bool
+applyFilters f man = and 
+    [ go name filterSearch
+      --go city filterCity
+    ]
+  where
+      go :: (z -> Bool) -> (ManFilter -> Maybe z) -> Bool
+      go x y =
+        case y f of
+            Nothing -> True
+            Just z -> x z
+      norm = T.filter validChar . T.map C.toLower . normalize NFKD
+      validChar = not . C.isMark
+      name x = norm x `T.isInfixOf` norm (manifestationName man)
+      {- let loc = runDB $ get404 $ manifestationLocation m
+          ads = runDB $ get404 $ locationAddress loc
+      city x = norm x `T.isInfixOf` norm (addressCity locationAddress manifestationLocation m) -}
+
+toValues :: [Entity a] -> [a]
+toValues [] = []
+toValues (x:xs) = entityVal x : (toValues xs)
+
 getAllMan :: DB [Entity Manifestation]
 getAllMan = selectList [] [Desc ManifestationName]
 
 getAllAddress :: DB [Entity Address]
 getAllAddress = selectList [] [Desc AddressCity]
 
-getUniqueCity :: DB [Entity Address]
-getUniqueCity = rawSql "SELECT DISTINCT city FROM address" [] --rawSql "SELECT city FROM address GROUP BY city" []
-
 getAllCat :: [Category]
 getAllCat = [(minBound :: Category) ..]
 
+getUniqueCity :: Handler [Text]
+getUniqueCity = do
+            c <- runDB $ rawSql "SELECT DISTINCT city FROM address" [] :: Handler [Single Text]
+            return $ map unSingle c
+
 dateFormat :: UTCTime -> String
 dateFormat = formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S"
-
-{- applyFilter :: ManFilter -> Manifestation  -> Bool
-applyFilter f m = and
-    [ go cat filterCat
-    , go city filterCity
-    , go name filterSearch
-    ]
-  where
-    go :: (z -> Bool) -> (ManFilter -> Maybe z) -> Bool
-    go x y =
-        case y f of
-            Nothing -> True
-            Just z -> x z
-    norm = T.filter validChar . T.map toLower . normalize NFKD
-    validChar = not . isMark
-    cat x = norm x `T.isInfixOf` norm (manifestationCategory m)
-    city x = norm x `T.isInfixOf` norm (addressCity $ locationAddress $ manifestationLocation m)
-    name x = norm x `T.isInfixOf` norm (manifestationName m) -}

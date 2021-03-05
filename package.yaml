@@ -14,6 +14,7 @@ dependencies:
 - classy-prelude-yesod >=1.5 && <1.6
 - bytestring >=0.10 && <0.11
 - text >=0.11 && <2.0
+- text-icu
 - persistent >=2.9 && <2.11
 - persistent-mysql >=2.9 && <2.11
 - mysql >= 0.1.4

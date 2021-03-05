@@ -28,7 +28,7 @@ Address json
 
 Location
     name Text sqltype=varchar(255)
-    address AddressId Maybe sqltype=varchar(255)
+    address AddressId sqltype=varchar(255)
     UniqueLocationName name
     deriving Show Typeable
 
@@ -37,6 +37,6 @@ Manifestation
     description Text Maybe sqltype=varchar(255)
     category Category Maybe
     startDateTime UTCTime sqltype=DateTime
-    location LocationId Maybe sqltype=varchar(255)
+    location LocationId sqltype=varchar(255)
     UniqueManName name
     deriving Show Typeable
