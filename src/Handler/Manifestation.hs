@@ -24,7 +24,7 @@ data ManFilter = ManFilter
     }
     deriving Show
 
--- Handlers
+-- Handler functions
 
 {- 
     Get just preview of all manifestations.
@@ -32,6 +32,7 @@ data ManFilter = ManFilter
 getManHomeR :: Handler Html
 getManHomeR = do
     ms <- runDB getAllMan
+
     defaultLayout $ do
         setTitle "Home manifestations"
         $(widgetFile "man-home")
@@ -58,16 +59,19 @@ getManUserR = do
 postManUserR :: Handler Html
 postManUserR = do
     (_, user) <- requireAuthPair
-    let toBool = isJust     
+    let toBool = isJust
+    let cats = getAllCat
+    cities <- getUniqueCity
     emans <- runDB getAllMan
-    let mans = toValues emans
     categories <- flip filterM getAllCat $ \cid -> toBool <$> runInputPost (iopt textField $ toPathPiece $ show cid)
     filters <- runInputPost $ ManFilter
         <$>iopt textField "City"
         <*>iopt textField "Search"
-    let filteredMan = filter (applyFilters filters) mans        --filterManifestations categories (filterSearch filters) (filterCity filters)
+    ms <- filterM (applyFilters filters) emans
+    
     defaultLayout $ do
-         [whamlet|<h1>#{show $ filteredMan}|]
+        setTitle "User manifestations"
+        $(widgetFile "man-user")
 
 {- 
     Take manifestation id.
@@ -93,12 +97,14 @@ filterManifestations cat city src = do
         src' = fromMaybe src
     runDB $ selectList [ManifestationName <-. cat] [] -}
 
--- proba 
-applyFilters :: ManFilter -> Manifestation -> Bool
-applyFilters f man = and 
-    [ go name filterSearch
-      --go city filterCity
-    ]
+applyFilters :: ManFilter -> Entity Manifestation -> Handler Bool
+applyFilters f man = do
+    city' <- getCityFromMan $ entityVal man
+    let city x = norm x == norm city'
+    pure $ and
+        [ go name filterSearch
+        , go city filterCity
+        ]
   where
       go :: (z -> Bool) -> (ManFilter -> Maybe z) -> Bool
       go x y =
@@ -107,14 +113,7 @@ applyFilters f man = and
             Just z -> x z
       norm = T.filter validChar . T.map C.toLower . normalize NFKD
       validChar = not . C.isMark
-      name x = norm x `T.isInfixOf` norm (manifestationName man)
-      {- let loc = runDB $ get404 $ manifestationLocation m
-          ads = runDB $ get404 $ locationAddress loc
-      city x = norm x `T.isInfixOf` norm (addressCity locationAddress manifestationLocation m) -}
-
-toValues :: [Entity a] -> [a]
-toValues [] = []
-toValues (x:xs) = entityVal x : (toValues xs)
+      name x = norm x `T.isInfixOf` norm (manifestationName (entityVal man))
 
 getAllMan :: DB [Entity Manifestation]
 getAllMan = selectList [] [Desc ManifestationName]
@@ -124,6 +123,13 @@ getAllAddress = selectList [] [Desc AddressCity]
 
 getAllCat :: [Category]
 getAllCat = [(minBound :: Category) ..]
+
+getCityFromMan :: Manifestation -> Handler Text
+getCityFromMan man = do
+            loc <- runDB $ get404 $ manifestationLocation man
+            ads <- runDB $ get404 $ locationAddress loc
+            let city = addressCity ads
+            return city
 
 getUniqueCity :: Handler [Text]
 getUniqueCity = do

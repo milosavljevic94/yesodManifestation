@@ -31,7 +31,7 @@
                   <h4>By city:
                   <div class="form-group">
                     <select class="form-control" id="sel1" name="City">
-                      <option>--Please choose an city--
+                      <option>
                       $forall c <- cities
                         <option>#{c}
                   
@@ -39,10 +39,9 @@
 
                 <!-- BEGIN SEARCH INPUT -->
                 <div class="col-md-4">
-                  <h4><i class="fa fa-file-o"></i> Search :
+                  <h4><i class="fa fa-file-o"></i> Search by name:
                   <div class="input-group">
-                    <input type="text" class="form-control" name="Search" value="web development">
-                  <p>Showing all results matching "web development"
+                    <input type="text" class="form-control" name="Search" value="">
                 
                 <!-- SUBMIT BUTTON-->
                 <div class="col-md-2 btnPadding">
@@ -50,7 +49,8 @@
     <hr>
 
     $if null ms
-      <h4>There is nor manifestations in database!
+      <h4>There are currently no events, or none for the selected filters.<br >
+          Please try new values for filters, thanks! 
     $else
       $forall Entity id man <- ms
         <div class="col-md-4">
