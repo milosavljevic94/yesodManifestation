@@ -18,9 +18,9 @@ import qualified Data.Char as C
 import Data.Text.ICU
 
 data ManFilter = ManFilter
-    {                                           -- filterCat :: [Category] -- getting categories out of this data
-        filterCity      :: Maybe T.Text,
-        filterSearch    :: Maybe T.Text
+    {
+        filterCity      :: Maybe T.Text
+       ,filterSearch    :: Maybe T.Text
     }
     deriving Show
 
@@ -63,12 +63,15 @@ postManUserR = do
     let cats = getAllCat
     cities <- getUniqueCity
     emans <- runDB getAllMan
-    categories <- flip filterM getAllCat $ \cid -> toBool <$> runInputPost (iopt textField $ toPathPiece $ show cid)
+    categories <- flip filterM cats $ \cat -> toBool <$> runInputPost (iopt textField $ toPathPiece $ show cat)
     filters <- runInputPost $ ManFilter
         <$>iopt textField "City"
         <*>iopt textField "Search"
-    ms <- filterM (applyFilters filters) emans
-    
+    let f man = do
+            city <- getCityFromMan man
+            pure $ applyFilters filters (man :: Entity Manifestation) city categories
+    ms <- filterM f emans
+
     defaultLayout $ do
         setTitle "User manifestations"
         $(widgetFile "man-user")
@@ -91,19 +94,12 @@ getManDetailsR mid = do
 
 -- Helper functions
 
-{- filterManifestations :: [Category] -> Maybe T.Text -> Maybe T.Text -> Handler [Entity Manifestation]
-filterManifestations cat city src = do
-    let city' = fromMaybe city
-        src' = fromMaybe src
-    runDB $ selectList [ManifestationName <-. cat] [] -}
-
-applyFilters :: ManFilter -> Entity Manifestation -> Handler Bool
-applyFilters f man = do
-    city' <- getCityFromMan $ entityVal man
-    let city x = norm x == norm city'
-    pure $ and
+applyFilters :: ManFilter -> Entity Manifestation -> Text -> [Category] -> Bool
+applyFilters f man city' cats = do
+    and
         [ go name filterSearch
         , go city filterCity
+        , goC cat cats
         ]
   where
       go :: (z -> Bool) -> (ManFilter -> Maybe z) -> Bool
@@ -111,9 +107,17 @@ applyFilters f man = do
         case y f of
             Nothing -> True
             Just z -> x z
+      goC :: ([Category] -> Bool) -> [Category] -> Bool
+      goC x y =
+          case y of
+              [] -> True
+              (c:_) -> x y
       norm = T.filter validChar . T.map C.toLower . normalize NFKD
       validChar = not . C.isMark
       name x = norm x `T.isInfixOf` norm (manifestationName (entityVal man))
+      city x = norm x == norm city'
+      cat xs = fromJust(manifestationCategory (entityVal man)) `elem` xs
+
 
 getAllMan :: DB [Entity Manifestation]
 getAllMan = selectList [] [Desc ManifestationName]
@@ -124,9 +128,9 @@ getAllAddress = selectList [] [Desc AddressCity]
 getAllCat :: [Category]
 getAllCat = [(minBound :: Category) ..]
 
-getCityFromMan :: Manifestation -> Handler Text
+getCityFromMan :: Entity Manifestation -> Handler Text
 getCityFromMan man = do
-            loc <- runDB $ get404 $ manifestationLocation man
+            loc <- runDB $ get404 $ manifestationLocation $ entityVal man
             ads <- runDB $ get404 $ locationAddress loc
             let city = addressCity ads
             return city
