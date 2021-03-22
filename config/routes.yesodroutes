@@ -17,6 +17,9 @@
 /man/manDetail/#ManifestationId ManDetailsR GET      -- stranica na kojoj su prikazane informacije o manifestaciji.
 
 
+!/man/manDetail/#ManifestationId/comments ManCommentR POST    --novi handler samo za komentare
+!/man/manDetail/#ManifestationId/comments/#ManCommentId/delete DeleteManCommentR POST
+
 -- Proba. Ne moraju viticaste zagrade, jedino kada je u pitanju {Maybe Text}.
 /proba/#Text ProbaR GET
 /prikaz PrikazR GET

@@ -34,9 +34,18 @@ Location
 
 Manifestation
     name Text sqltype=varchar(255)
-    description Text Maybe sqltype=varchar(255)
+    description Text Maybe sqltype=varchar(300)
     category Category Maybe
     startDateTime UTCTime sqltype=DateTime
     location LocationId sqltype=varchar(255)
     UniqueManName name
     deriving Show Typeable
+
+ManComment
+    text Text sqltype=varchar(500)
+    created UTCTime sqltype=DateTime
+    writer UserId Maybe sqltype=varchar(255) default=NULL
+    manId ManifestationId sqltype=varchar(255) default=NULL
+    deriving Show Typeable
+
+    

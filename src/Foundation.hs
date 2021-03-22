@@ -47,6 +47,9 @@ data MenuTypes
     = NavbarLeft MenuItem
     | NavbarRight MenuItem
 
+dateFormat :: UTCTime -> String
+dateFormat = formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S"
+
 -- This is where we define all of the routes in our application. For a full
 -- explanation of the syntax, please see:
 -- http://www.yesodweb.com/book/routing-and-handlers
@@ -173,6 +176,8 @@ instance Yesod App where
     isAuthorized ProfileR _ = isAuthenticated
     isAuthorized ManUserR _ = isAuthenticated
     isAuthorized (ManDetailsR _) _ = isAuthenticated
+    isAuthorized (ManCommentR _) _ = isAuthenticated
+    isAuthorized (DeleteManCommentR _ _) _ = isAuthenticated
 
     
 
@@ -225,6 +230,7 @@ instance YesodBreadcrumbs App where
     breadcrumb ProfileR = return ("Profile", Just HomeR)
     breadcrumb ManHomeR = return ("ManHome", Just HomeR)
     breadcrumb ManUserR = return ("ManUser", Just HomeR)
+    breadcrumb (ManDetailsR _) = return ("ManDetails", Just ManUserR)
     breadcrumb  _ = return ("home", Nothing)
 
 -- How to run database actions.

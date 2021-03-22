@@ -7,7 +7,7 @@
           
         <div class="row">
           $if null ms
-            <h4>There is nor manifestations in database!
+            <h4>There is not manifestations in database!
           $else
             $forall Entity id man <- ms
               <div class="col-md-4">

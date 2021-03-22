@@ -17,6 +17,3 @@ getProfileR = do
     defaultLayout $ do
         setTitle . toHtml $ userIdent user <> "'s User page"
         $(widgetFile "profile")
-
-dateFormat :: UTCTime -> [Char]
-dateFormat = formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S"

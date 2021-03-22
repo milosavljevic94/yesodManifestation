@@ -6,8 +6,14 @@
 {-# LANGUAGE QuasiQuotes#-}
 {-# OPTIONS_GHC -Wno-unused-matches #-}
 {-# OPTIONS_GHC -Wno-name-shadowing #-}
+{-# LANGUAGE RankNTypes #-}
 
-module Handler.Manifestation where
+module Handler.Manifestation
+    (    getManHomeR
+        ,getManUserR
+        ,getManDetailsR
+        ,postManUserR
+    ) where
 
 import Import
 import Model.Types
@@ -82,10 +88,11 @@ postManUserR = do
 -}
 getManDetailsR :: ManifestationId -> Handler Html
 getManDetailsR mid = do
-    (_, user) <- requireAuthPair
+    (ui, user) <- requireAuthPair
     md <- runDB $ get404 mid
     loc <- runDB $ get404 $ manifestationLocation md
     ads <- runDB $ get404 $ locationAddress loc
+    comments <- runDB $ getComFromMan mid
 
     defaultLayout $ do
         setTitle "Manifestation details"
@@ -118,12 +125,14 @@ applyFilters f man city' cats = do
       city x = norm x == norm city'
       cat xs = fromJust(manifestationCategory (entityVal man)) `elem` xs
 
+getComFromMan :: ManifestationId -> DB [Entity ManComment]
+getComFromMan manid = selectList [ManCommentManId ==. manid] []
+
+{- getCommentWriter :: Maybe (Key User) -> Handler User
+getCommentWriter uid = runDB $ get404 $ fromJust uid -}
 
 getAllMan :: DB [Entity Manifestation]
-getAllMan = selectList [] [Desc ManifestationName]
-
-getAllAddress :: DB [Entity Address]
-getAllAddress = selectList [] [Desc AddressCity]
+getAllMan = selectList [] [Asc ManifestationName]
 
 getAllCat :: [Category]
 getAllCat = [(minBound :: Category) ..]
@@ -139,6 +148,3 @@ getUniqueCity :: Handler [Text]
 getUniqueCity = do
             c <- runDB $ rawSql "SELECT DISTINCT city FROM address" [] :: Handler [Single Text]
             return $ map unSingle c
-
-dateFormat :: UTCTime -> String
-dateFormat = formatTime defaultTimeLocale "%Y-%m-%d %H:%M:%S"

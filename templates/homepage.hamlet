@@ -24,12 +24,11 @@
                 <div .page-header>
                     <h1 #start>Starting
 
-                    $# <a href=/proba>Link proba // ovo ce raditi ali ako se promeni naziv rute problem.zato koristimo tip ProbaR
-                    <a href=@{ProbaR "Nemanja"}>Link ka proba
-
-                    <a href=@{PrikazR}>Link ka prikazu
-
-                    $#<a href=@{Prikaz2R}>Link ka JSON prikazu
+                    $# Some examples for exercise
+                    $# <a href=/proba>Link proba
+                    $# <a href=@{ProbaR "Nemanja"}>Link ka proba
+                    $# <a href=@{PrikazR}>Link ka prikazu
+                    $# <a href=@{Prikaz2R}>Link ka JSON prikazu
 
                     <p>
                         Now that you have a working project you should use the

@@ -29,6 +29,7 @@ section{
 	background: #FCF6F5FF;
 	border: 4px;
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+    height: 436px;
 }
 
 .card-img {
@@ -63,7 +64,7 @@ section{
         font-size: 12px;
         margin:0;
         padding:10px 5px;
-         line-height: 0;
+        line-height: 0;
 }
 .card-desc {
 	padding: 1.25rem;
