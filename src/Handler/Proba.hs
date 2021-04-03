@@ -69,10 +69,3 @@ getAllAddress = selectList [] []
 
 getAllMan :: DB [Entity Manifestation]
 getAllMan = selectList [] []
-
-{- getPrikaz2R :: Handler Value   
-getPrikaz2R = do
-    sveLokacije <- runDB getAllLocations
-    sveAdrese <- runDB getAllAddress
-    sveManifestacije <- runDB getAllMan
-    return $ toJSON sveLokacije -}

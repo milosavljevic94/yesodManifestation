@@ -23,12 +23,16 @@ import Database.Persist.Sql ( rawSql, Single (unSingle) )
 import qualified Data.Char as C
 import Data.Text.ICU
 
+{-
+    Type for accepting data, entered by the user.
+-}
 data ManFilter = ManFilter
     {
         filterCity      :: Maybe T.Text
        ,filterSearch    :: Maybe T.Text
     }
     deriving Show
+
 
 -- Handler functions
 
@@ -85,6 +89,7 @@ postManUserR = do
 {- 
     Take manifestation id.
     Show details about one manifestation.
+    Show comment section.
 -}
 getManDetailsR :: ManifestationId -> Handler Html
 getManDetailsR mid = do
@@ -128,8 +133,11 @@ applyFilters f man city' cats = do
 getComFromMan :: ManifestationId -> DB [Entity ManComment]
 getComFromMan manid = selectList [ManCommentManId ==. manid] []
 
-{- getCommentWriter :: Maybe (Key User) -> Handler User
-getCommentWriter uid = runDB $ get404 $ fromJust uid -}
+getCommentWriter :: ManComment -> Handler Text
+getCommentWriter c = do
+            user <- runDB $ get404 $ fromJust $ manCommentWriter c
+            let username = userIdent user
+            return username
 
 getAllMan :: DB [Entity Manifestation]
 getAllMan = selectList [] [Asc ManifestationName]
