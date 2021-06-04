@@ -8,8 +8,6 @@
             <p><b>Start :</b>&nbsp#{dateFormat $ manifestationStartDateTime md}
             <p><b>Location :</b>&nbsp#{locationName loc}
             <p><b>Address :</b>&nbsp#{addressCity ads}, #{addressStreet ads}, #{addressNumber ads}<br >#{addressState ads}
-            $# <p><b>Tools:</b> Illustrator
-            $# <p class="mb-0"><b>Budget:</b> $500
 
         <div class="project-info-box mt-0 mb-0">
             <p class="mb-0">
@@ -56,7 +54,7 @@
                                         <div class="col-xs-10 col-md-11">
                                             <div>
                                                 <div .mic-info>
-                                                    By: <a href=@{ProfileR}>#{getCommentWriter $ com}</a> on #{dateFormat $ manCommentCreated com}
+                                                    By: <a href=@{ProfileR}>#{userIdent user}</a> on #{dateFormat $ manCommentCreated com}
                                             <div .comment-text>
                                                 #{manCommentText com}
                                             $if fromJust(manCommentWriter com) == ui

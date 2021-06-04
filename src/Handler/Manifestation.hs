@@ -8,6 +8,7 @@
 {-# OPTIONS_GHC -Wno-name-shadowing #-}
 {-# LANGUAGE RankNTypes #-}
 
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
 module Handler.Manifestation
     (    getManHomeR
         ,getManUserR
@@ -133,14 +134,19 @@ applyFilters f man city' cats = do
 getComFromMan :: ManifestationId -> DB [Entity ManComment]
 getComFromMan manid = selectList [ManCommentManId ==. manid] []
 
+getUniqueCity :: Handler [Text]
+getUniqueCity = do
+            c <- runDB $ rawSql "SELECT DISTINCT city FROM address" [] :: Handler [Single Text]
+            return $ map unSingle c
+
+getAllMan :: DB [Entity Manifestation]
+getAllMan = selectList [] [Asc ManifestationName]
+
 getCommentWriter :: ManComment -> Handler Text
 getCommentWriter c = do
             user <- runDB $ get404 $ fromJust $ manCommentWriter c
             let username = userIdent user
             return username
-
-getAllMan :: DB [Entity Manifestation]
-getAllMan = selectList [] [Asc ManifestationName]
 
 getAllCat :: [Category]
 getAllCat = [(minBound :: Category) ..]
@@ -151,8 +157,3 @@ getCityFromMan man = do
             ads <- runDB $ get404 $ locationAddress loc
             let city = addressCity ads
             return city
-
-getUniqueCity :: Handler [Text]
-getUniqueCity = do
-            c <- runDB $ rawSql "SELECT DISTINCT city FROM address" [] :: Handler [Single Text]
-            return $ map unSingle c

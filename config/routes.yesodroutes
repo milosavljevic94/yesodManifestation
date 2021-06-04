@@ -12,14 +12,14 @@
 /profile ProfileR GET
 
 -- routes for Manifestation
-/man/manHome ManHomeR GET       -- manifestacije home page, kada korisnik nije ulogovan.
-/man/manUser ManUserR GET POST     -- man home kada je korisnik ulogovan sa dodatnim opcijama(filteri, search..).
-/man/manDetail/#ManifestationId ManDetailsR GET      -- stranica na kojoj su prikazane informacije o manifestaciji.
+/man/manHome ManHomeR GET
+/man/manUser ManUserR GET POST
+/man/manDetail/#ManifestationId ManDetailsR GET
 
 
-!/man/manDetail/#ManifestationId/comments ManCommentR POST    --novi handler samo za komentare
+!/man/manDetail/#ManifestationId/comments ManCommentR POST
 !/man/manDetail/#ManifestationId/comments/#ManCommentId/delete DeleteManCommentR POST
 
--- Proba. Ne moraju viticaste zagrade, jedino kada je u pitanju {Maybe Text}.
+
 /proba/#Text ProbaR GET
 /prikaz PrikazR GET
