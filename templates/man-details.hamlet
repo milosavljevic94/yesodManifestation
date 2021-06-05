@@ -28,7 +28,9 @@
             <img src="/static/imgs/no-image-icon.jpeg" alt="project-image" class="rounded">
         <div class="project-info-box">
             <p><b>Categorie:</b>#{show $ fromJust(manifestationCategory md)}
-            $# <p><b>Skills:</b> Illustrator
+
+
+    $# Comment section 
 
     <div class="col-md-8">
         <div .bs-callout.bs-callout-info.well>
@@ -45,7 +47,7 @@
                     $if null comments
                         <h4>There is not comments!
                     $else
-                        $forall Entity cid com <- comments
+                        $forall (Entity cid com, writer) <- comments
                             <form method=post action=@{DeleteManCommentR mid cid}>
                                 <li .list-group-item>
                                     <div class="row">
@@ -54,7 +56,8 @@
                                         <div class="col-xs-10 col-md-11">
                                             <div>
                                                 <div .mic-info>
-                                                    By: <a href=@{ProfileR}>#{userIdent user}</a> on #{dateFormat $ manCommentCreated com}
+                                                    $#By: <a href=@{ProfileR}>#{userIdent user}</a> on #{dateFormat $ manCommentCreated com}
+                                                    By: <a href=@{ProfileR}>#{writer}</a> on #{dateFormat $ manCommentCreated com}
                                             <div .comment-text>
                                                 #{manCommentText com}
                                             $if fromJust(manCommentWriter com) == ui

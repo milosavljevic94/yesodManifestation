@@ -98,7 +98,9 @@ getManDetailsR mid = do
     md <- runDB $ get404 mid
     loc <- runDB $ get404 $ manifestationLocation md
     ads <- runDB $ get404 $ locationAddress loc
-    comments <- runDB $ getComFromMan mid
+
+    cs <- runDB $ getComFromMan mid
+    comments <- forM cs getCommentWriter
 
     defaultLayout $ do
         setTitle "Manifestation details"
@@ -142,11 +144,11 @@ getUniqueCity = do
 getAllMan :: DB [Entity Manifestation]
 getAllMan = selectList [] [Asc ManifestationName]
 
-getCommentWriter :: ManComment -> Handler Text
-getCommentWriter c = do
-            user <- runDB $ get404 $ fromJust $ manCommentWriter c
+getCommentWriter :: Entity ManComment -> Handler (Entity ManComment, Text)
+getCommentWriter mc = do
+            user <- runDB $ get404 $ fromJust $ manCommentWriter (entityVal mc)
             let username = userIdent user
-            return username
+            return (mc, username)
 
 getAllCat :: [Category]
 getAllCat = [(minBound :: Category) ..]
